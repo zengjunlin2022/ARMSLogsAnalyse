@@ -4,6 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ARMS日誌分析工具</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.15.14/lib/index.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/element-ui@2.15.14/lib/theme-chalk/index.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body></body>
+  <body>
+    <div id="app">
+      <el-header class="header">
+        <el-radio-group v-model="type">
+          <el-radio-button
+            :label="item.text"
+            v-for="(item,index) in types"
+          ></el-radio-button>
+        </el-radio-group>
+        <div class="btns">
+          <el-button type="primary" @click="submit">分析</el-button>
+        </div>
+      </el-header>
+      <el-main class="main">
+        <el-row class="row">
+          <el-col :span="10" :offset="0" class="col">
+            <textarea name="" v-model="content" class="textInput"></textarea>
+          </el-col>
+          <el-col :span="13" :offset="1" class="col">
+            <textarea
+              name=""
+              v-model="result"
+              class="textInput"
+              readonly
+            ></textarea>
+          </el-col>
+        </el-row>
+      </el-main>
+    </div>
+    <script src="js/app.js"></script>
+  </body>
 </html>
