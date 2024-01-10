@@ -102,7 +102,7 @@ const App = new Vue({
       console.log(msg);
       // {"userName":"T2606","funcName":"store-actions","apiName":"Schedule_Queue_V2_length","data":6,"time":"2024-01-08 17:57:37","device":"Redmi-Xiaomi 22041211AC"}
       let userName = msg.userName;
-      let data = msg.data === undefined ? "-" : msg.data;
+      let data = !msg.data ? "-" : msg.data;
       let time = msg.time;
       let device = msg.device;
       return {
