@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 html,
 body,
 #app {
@@ -37,6 +40,7 @@ p {
         height: 100%;
         border: 1px solid #ccc;
         overflow: auto;
+        padding: 10px;
         p {
           width: fit-content;
           margin: 2px 0;
@@ -44,6 +48,12 @@ p {
         .wraning {
           background-color: #f56c6c;
           color: #fff;
+        }
+        .item {
+          margin-right: 10px;
+          &:last-child {
+            margin-right: 0;
+          }
         }
       }
     }

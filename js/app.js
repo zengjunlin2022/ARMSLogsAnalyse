@@ -5,7 +5,7 @@ const App = new Vue({
     type: "待消費緩存",
     types: [
       { text: "待消費緩存", value: "0", wraningThreshold: 3 },
-      { text: "設備全部緩存", value: "1", wraningThreshold: 12 },
+      { text: "設備緩存總數", value: "1", wraningThreshold: 12 },
       { text: "catchError", value: "2", wraningThreshold: null },
     ],
     // 輸入
@@ -25,7 +25,7 @@ const App = new Vue({
         // 處理
         if (that.type == "待消費緩存") {
           msg = that.parseWaitPostCount(JSON.parse(msg));
-        } else if (that.type == "設備全部緩存") {
+        } else if (that.type == "設備緩存總數") {
           msg = that.parseAllPostCount(JSON.parse(msg));
         } else if (that.type == "catchError") {
           msg = that.parseCatchError(JSON.parse(msg));
@@ -59,10 +59,13 @@ const App = new Vue({
         result[staffId].forEach((item) => {
           str += `
           <p>
-            <span class="${that.getWraningClass(that.type, item.data)}">
-              ${item.data} ${item.time}
+            <span class="item ${that.getWraningClass(that.type, item.data)}">
+              ${item.data}
             </span>
-            <span>${item.device}</span>
+            <span class="item ${that.getWraningClass(that.type, item.data)}">
+              ${item.time}
+            </span>
+            <span class="item">${item.device}</span>
           </p>`;
         });
         str += "</br></br>";
@@ -99,7 +102,7 @@ const App = new Vue({
       console.log(msg);
       // {"userName":"T2606","funcName":"store-actions","apiName":"Schedule_Queue_V2_length","data":6,"time":"2024-01-08 17:57:37","device":"Redmi-Xiaomi 22041211AC"}
       let userName = msg.userName;
-      let data = msg.data;
+      let data = msg.data === undefined ? "-" : msg.data;
       let time = msg.time;
       let device = msg.device;
       return {
