@@ -10,6 +10,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/element-ui@2.15.14/lib/theme-chalk/index.min.css"
     />
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -31,12 +32,13 @@
             <textarea name="" v-model="content" class="textInput"></textarea>
           </el-col>
           <el-col :span="13" :offset="1" class="col">
-            <textarea
+            <div class="output" v-html="result"></div>
+            <!-- <textarea
               name=""
               v-model="result"
               class="textInput"
               readonly
-            ></textarea>
+            ></textarea> -->
           </el-col>
         </el-row>
       </el-main>
