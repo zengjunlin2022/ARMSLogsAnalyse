@@ -12,8 +12,55 @@ const App = new Vue({
     content: "",
     // 輸出
     result: "",
+    // 高亮staffId
+    highlightStaffId: null,
   },
   methods: {
+    radioGroupChange() {
+      let that = this;
+      that.content = "";
+      that.result = "";
+    },
+    checkHasWraning(items) {
+      let that = this;
+      let btnType = "default";
+      console.log(items);
+      if (that.type == "待消費緩存") {
+        let wraningThreshold = that.types.find(
+          (t) => t.text == that.type
+        ).wraningThreshold;
+        let result = items.filter((item) => {
+          return item.data > wraningThreshold;
+        });
+        if (result.length > 0) {
+          btnType = "danger";
+        }
+      } else if (that.type == "設備緩存總數") {
+        let wraningThreshold = that.types.find(
+          (t) => t.text == that.type
+        ).wraningThreshold;
+        let result = items.filter((item) => {
+          return item.data > wraningThreshold;
+        });
+        if (result.length > 0) {
+          btnType = "danger";
+        }
+      } else if (that.type == "catchError") {
+        let result = items.filter((item) => {
+          return item.data != "-";
+        });
+        if (result.length > 0) {
+          btnType = "danger";
+        }
+      }
+      return btnType;
+    },
+    setOutputScroll(key) {
+      let that = this;
+      let $dom = document.getElementById(`output_${key}`);
+      $dom.scrollIntoView();
+      that.highlightStaffId = key;
+    },
     submit() {
       let that = this;
       if (that.content === "") return;
@@ -42,7 +89,9 @@ const App = new Vue({
         });
       });
 
-      that.result = that.obj2str(result);
+      // that.result = that.obj2str(result);
+      that.result = result;
+      // console.log(result);
     },
     getWraningClass(type, data) {
       let that = this;
@@ -83,6 +132,7 @@ const App = new Vue({
         data,
         time,
         device,
+        msg,
       };
     },
     parseAllPostCount(msg) {
@@ -96,10 +146,11 @@ const App = new Vue({
         data,
         time,
         device,
+        msg,
       };
     },
     parseCatchError(msg) {
-      console.log(msg);
+      // console.log(msg);
       // {"userName":"T2606","funcName":"store-actions","apiName":"Schedule_Queue_V2_length","data":6,"time":"2024-01-08 17:57:37","device":"Redmi-Xiaomi 22041211AC"}
       let userName = msg.userName;
       let data = !msg.data ? "-" : msg.data;
@@ -110,6 +161,7 @@ const App = new Vue({
         data,
         time,
         device,
+        msg,
       };
     },
   },

@@ -35,9 +35,23 @@ p {
         height: 100%;
         resize: none;
       }
-      .output {
+      .right {
         width: 100%;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .staffList {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .staffBtn {
+          margin-bottom: 5px;
+          margin-right: 5px;
+        }
+      }
+      .output {
+        flex: 1;
         border: 1px solid #ccc;
         overflow: auto;
         padding: 10px;
@@ -49,13 +63,35 @@ p {
           background-color: #f56c6c;
           color: #fff;
         }
+        .items {
+          margin-bottom: 30px;
+          .staffId {
+            margin-bottom: 15px;
+          }
+        }
+        .subItems {
+          line-height: 28px;
+          position: relative;
+          padding-left: 30px;
+        }
         .item {
           margin-right: 10px;
           &:last-child {
             margin-right: 0;
           }
         }
+        .highlightStaffId {
+          animation: highlightStaffIdKeyframes 1s ease-in-out;
+        }
       }
     }
+  }
+}
+@keyframes highlightStaffIdKeyframes {
+  from {
+    background: #ccc;
+  }
+  to {
+    background: rgba(255, 255, 255, 0);
   }
 }

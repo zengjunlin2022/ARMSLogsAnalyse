@@ -16,7 +16,7 @@
   <body>
     <div id="app">
       <el-header class="header">
-        <el-radio-group v-model="type">
+        <el-radio-group v-model="type" @input="radioGroupChange">
           <el-radio-button
             :label="item.text"
             v-for="(item,index) in types"
@@ -32,13 +32,74 @@
             <textarea name="" v-model="content" class="textInput"></textarea>
           </el-col>
           <el-col :span="13" :offset="1" class="col">
-            <div class="output" v-html="result"></div>
-            <!-- <textarea
-              name=""
-              v-model="result"
-              class="textInput"
-              readonly
-            ></textarea> -->
+            <div class="right">
+              <div class="staffList">
+                <div class="staffBtn" v-for="(item,key) in result">
+                  <el-button
+                    size="mini"
+                    :type="checkHasWraning(item)"
+                    round
+                    @click="setOutputScroll(key)"
+                    >{{key}}</el-button
+                  >
+                </div>
+              </div>
+              <div class="output" id="output">
+                <div
+                  :class="['items',highlightStaffId == key ? 'highlightStaffId' : '']"
+                  v-for="(item,key) in result"
+                  :key="key"
+                  :id="'output_'+key"
+                >
+                  <div class="staffId"><strong>{{key}}</strong></div>
+                  <div
+                    class="subItems"
+                    v-for="(subItem,index) in item"
+                    :key="'subItem_'+index"
+                  >
+                    <!-- 詳細 -->
+                    <el-popover
+                      placement="top-start"
+                      title=""
+                      width="600"
+                      trigger="hover"
+                      :content="subItem.msg"
+                      v-if="subItem.data !== '-'"
+                    >
+                      <div
+                        slot="reference"
+                        style="
+                          width: 28px;
+                          height: 28px;
+                          display: flex;
+                          flex-direction: row;
+                          align-items: center;
+                          justify-content: center;
+                          position: absolute;
+                          left: 0;
+                          top: 0;
+                          color: #f56c6c;
+                        "
+                      >
+                        <i class="el-icon-info"></i>
+                      </div>
+                    </el-popover>
+                    <!-- 數據 -->
+                    <span
+                      :class="['item', getWraningClass(type, subItem.data)]"
+                    >
+                      {{subItem.data}}
+                    </span>
+                    <span
+                      :class="['item', getWraningClass(type, subItem.data)]"
+                    >
+                      {{subItem.time}}
+                    </span>
+                    <span :class="['item']">{{subItem.device}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </el-col>
         </el-row>
       </el-main>
