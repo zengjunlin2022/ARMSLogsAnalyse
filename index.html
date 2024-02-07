@@ -34,27 +34,28 @@
           <el-col :span="13" :offset="1" class="col">
             <div class="right">
               <div class="staffList">
-                <div class="staffBtn" v-for="(item,key) in result">
+                <div class="staffBtn" v-for="(item,idx) in result">
                   <el-button
                     size="mini"
                     :type="checkHasWraning(item)"
                     round
-                    @click="setOutputScroll(key)"
-                    >{{key}}</el-button
+                    @click="setOutputScroll(item.userName)"
                   >
+                    {{item.userName}}
+                  </el-button>
                 </div>
               </div>
               <div class="output" id="output">
                 <div
-                  :class="['items',highlightStaffId == key ? 'highlightStaffId' : '']"
-                  v-for="(item,key) in result"
-                  :key="key"
-                  :id="'output_'+key"
+                  :class="['items',highlightStaffId == item.userName ? 'highlightStaffId' : '']"
+                  v-for="(item,idx) in result"
+                  :key="'staff_'+item.userName"
+                  :id="'output_'+item.userName"
                 >
-                  <div class="staffId"><strong>{{key}}</strong></div>
+                  <div class="staffId"><strong>{{item.userName}}</strong></div>
                   <div
                     class="subItems"
-                    v-for="(subItem,index) in item"
+                    v-for="(subItem,index) in item.data"
                     :key="'subItem_'+index"
                   >
                     <!-- 詳細 -->

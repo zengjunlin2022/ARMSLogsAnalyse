@@ -11,7 +11,7 @@ const App = new Vue({
     // 輸入
     content: "",
     // 輸出
-    result: "",
+    result: [],
     // 高亮staffId
     highlightStaffId: null,
   },
@@ -19,7 +19,7 @@ const App = new Vue({
     radioGroupChange() {
       let that = this;
       that.content = "";
-      that.result = "";
+      that.result = [];
     },
     checkHasWraning(items) {
       let that = this;
@@ -29,7 +29,7 @@ const App = new Vue({
         let wraningThreshold = that.types.find(
           (t) => t.text == that.type
         ).wraningThreshold;
-        let result = items.filter((item) => {
+        let result = items.data.filter((item) => {
           return item.data > wraningThreshold;
         });
         if (result.length > 0) {
@@ -39,14 +39,14 @@ const App = new Vue({
         let wraningThreshold = that.types.find(
           (t) => t.text == that.type
         ).wraningThreshold;
-        let result = items.filter((item) => {
+        let result = items.data.filter((item) => {
           return item.data > wraningThreshold;
         });
         if (result.length > 0) {
           btnType = "danger";
         }
       } else if (that.type == "catchError") {
-        let result = items.filter((item) => {
+        let result = items.data.filter((item) => {
           return item.data != "-";
         });
         if (result.length > 0) {
@@ -65,7 +65,7 @@ const App = new Vue({
       let that = this;
       if (that.content === "") return;
       let list = JSON.parse(that.content).data.items;
-      let result = {};
+      let result = [];
       list.forEach((item) => {
         // 轉碼
         let msg = decodeURIComponent(item.msg);
@@ -79,17 +79,28 @@ const App = new Vue({
         }
 
         // 按工號聚合
-        if (!result.hasOwnProperty(msg.userName)) {
-          result[msg.userName] = [];
+        let staffIdx = result.findIndex((item) => {
+          return item.userName == msg.userName;
+        });
+        if (staffIdx < 0) {
+          result.push({
+            userName: msg.userName,
+            data: [],
+          });
+          staffIdx = result.length - 1;
         }
-        result[msg.userName].push(msg);
+        result[staffIdx].data.push(msg);
         // 按時間排序
-        result[msg.userName].sort((a, b) => {
+        result[staffIdx].data.sort((a, b) => {
           return dayjs(b.time).valueOf() - dayjs(a.time).valueOf();
         });
       });
 
-      // that.result = that.obj2str(result);
+      // 按工號排序
+      result.sort((a, b) => {
+        return String(a.userName).localeCompare(String(b.userName));
+      });
+
       that.result = result;
       // console.log(result);
     },
